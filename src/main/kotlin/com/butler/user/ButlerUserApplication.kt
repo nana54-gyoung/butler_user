@@ -1,4 +1,4 @@
-package com.butler.user.user
+package com.butler.user
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
