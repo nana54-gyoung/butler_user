@@ -1,6 +1,6 @@
 package com.butler.user.model.entity
 
-import com.butler.user.common.MemberRoleConverter
+import com.butler.user.common.converter.MemberRoleConverter
 import com.butler.user.model.enums.MEMBER_ROLE
 import jakarta.persistence.*
 import java.time.LocalDateTime

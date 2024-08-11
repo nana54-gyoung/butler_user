@@ -1,4 +1,4 @@
-package com.butler.user.common
+package com.butler.user.common.converter
 
 import com.butler.user.common.exception.ButlerException
 import com.butler.user.model.enums.MEMBER_ROLE
