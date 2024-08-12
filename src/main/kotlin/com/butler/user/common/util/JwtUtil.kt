@@ -16,6 +16,7 @@ class JwtUtil {
             val claims = Jwts.claims()
             claims["role"] = member.role
             claims["mbno"] = member.mbno
+            claims["bmno"] = member.bmno
 
             val now = Date()
             val utcExpirationDate = Date(now.time + 1000L * 60 * 60)

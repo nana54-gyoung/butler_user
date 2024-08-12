@@ -12,5 +12,6 @@ data class MemberEntity(@Id @GeneratedValue(strategy = GenerationType.IDENTITY)v
     var id : String? = null
     var tel : String? = null
     var password : String? = null
+    var bmno : Int? = null
     var regdt : LocalDateTime? = LocalDateTime.now()
 }

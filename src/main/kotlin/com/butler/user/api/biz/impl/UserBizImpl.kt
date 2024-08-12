@@ -25,19 +25,24 @@ class UserBizImpl(
     override fun join(joinVO: JoinVO): ResVO {
         return try {
             if(joinVO.checkTel() && !joinVO.password.isNullOrBlank()) {
+                val encodePw = passwordEncoder.encryptCBC(joinVO.password!!)
+                var butlerEntity = ButlerMemberEntity()
+                if(joinVO.role == MEMBER_ROLE.BUTLER) {
+                    butlerEntity = butlerMemberRepository.save(ButlerMemberEntity().apply {
+                        this.id = joinVO.id
+                        this.tel = joinVO.tel
+                        this.password = encodePw
+                    })
+                }
+
                 val joinRes = memberRepository.save(MemberEntity().apply {
                     this.id = joinVO.id
                     this.tel = joinVO.tel
-                    this.password = passwordEncoder.encryptCBC(joinVO.password!!)
+                    this.password = encodePw
                     this.role = joinVO.role
+                    this.bmno = butlerEntity.bmno
                 })
-                if(joinVO.role == MEMBER_ROLE.BUTLER) {
-                    butlerMemberRepository.save(ButlerMemberEntity().apply {
-                        this.id = joinVO.id
-                        this.tel = joinVO.tel
-                        this.password = joinRes.password
-                    })
-                }
+
                 ResVO(meta = ResMetaVO(200, "ok"), data = joinRes)
             } else ResVO(meta = ResMetaVO(400, "휴대폰 번호가 올바르지 않습니다."))
         }catch (e : ButlerException) {
