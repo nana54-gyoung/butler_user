@@ -8,13 +8,17 @@ import com.butler.user.api.ui.vo.ResVO
 import com.butler.user.common.exception.ButlerException
 import com.butler.user.common.util.CBCUtil
 import com.butler.user.common.util.JwtUtil
+import com.butler.user.model.entity.ButlerMemberEntity
 import com.butler.user.model.entity.MemberEntity
+import com.butler.user.model.enums.MEMBER_ROLE
+import com.butler.user.repository.ButlerMemberRepository
 import com.butler.user.repository.MemberRepository
 import org.springframework.stereotype.Service
 
 @Service
 class UserBizImpl(
     private val memberRepository : MemberRepository,
+    private val butlerMemberRepository : ButlerMemberRepository,
     private val passwordEncoder: CBCUtil
 ) : UserBiz {
 
@@ -27,6 +31,13 @@ class UserBizImpl(
                     this.password = passwordEncoder.encryptCBC(joinVO.password!!)
                     this.role = joinVO.role
                 })
+                if(joinVO.role == MEMBER_ROLE.BUTLER) {
+                    butlerMemberRepository.save(ButlerMemberEntity().apply {
+                        this.id = joinVO.id
+                        this.tel = joinVO.tel
+                        this.password = joinRes.password
+                    })
+                }
                 ResVO(meta = ResMetaVO(200, "ok"), data = joinRes)
             } else ResVO(meta = ResMetaVO(400, "휴대폰 번호가 올바르지 않습니다."))
         }catch (e : ButlerException) {
